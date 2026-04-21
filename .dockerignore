@@ -1,0 +1,20 @@
+# Dependências locais (serão instaladas dentro do container pelo npm install)
+node_modules
+npm-debug.log
+
+# Arquivos de infraestrutura (não pertencem ao container da aplicação)
+terraform/
+.terraform/
+*.tfstate*
+.git
+.gitignore
+
+# Documentação e testes locais
+README.md
+LICENSE
+.github/
+
+# Arquivos de sistema e IDE
+.DS_Store
+.vscode/
+.idea/
