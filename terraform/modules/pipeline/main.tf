@@ -1,10 +1,10 @@
-# S3 para Artefatos
+
 resource "aws_s3_bucket" "pipeline_artifacts" {
   bucket        = "pipeline-artifacts-${var.project_name}-${var.aws_account_id}"
   force_destroy = true
 }
 
-# IAM Role para o CodeBuild
+
 resource "aws_iam_role" "codebuild_role" {
   name = "${var.project_name}-codebuild-role"
   assume_role_policy = jsonencode({
@@ -26,7 +26,7 @@ resource "aws_iam_role_policy" "codebuild_policy" {
   })
 }
 
-# CodeBuild Project
+
 resource "aws_codebuild_project" "project" {
   name          = "${var.project_name}-build"
   service_role  = aws_iam_role.codebuild_role.arn
@@ -58,7 +58,7 @@ resource "aws_codebuild_project" "project" {
   }
 }
 
-# IAM Role para a Pipeline
+
 resource "aws_iam_role" "pipeline_role" {
   name = "${var.project_name}-pipeline-role"
   assume_role_policy = jsonencode({
@@ -84,7 +84,7 @@ resource "aws_iam_role_policy" "pipeline_policy" {
 resource "aws_codepipeline" "pipeline" {
   name          = "${var.project_name}-pipeline"
   role_arn      = aws_iam_role.pipeline_role.arn
-  pipeline_type = "V2" # <--- OBRIGATÓRIO PARA USAR CODESTAR CONNECTIONS ATUALMENTE
+  pipeline_type = "V2" 
 
   artifact_store {
     location = aws_s3_bucket.pipeline_artifacts.bucket
@@ -117,7 +117,7 @@ resource "aws_codepipeline" "pipeline" {
         ConnectionArn    = var.github_connection_arn
         FullRepositoryId = var.github_repo_id
         BranchName       = "main"
-        # DetectChanges = false  <-- Na V2, o controle é feito pelo bloco 'trigger' acima
+      
       }
     }
   }
@@ -154,4 +154,3 @@ resource "aws_codepipeline" "pipeline" {
   }
 }
 
-# Restante do código (S3, Roles, CodeBuild) permanece o mesmo que você já tem...

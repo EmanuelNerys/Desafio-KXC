@@ -8,7 +8,7 @@ resource "aws_ecr_repository" "this" {
   }
 }
 
-# Boa prática: Adicionar uma política para limpar imagens antigas (Lifecycle Policy)
+
 resource "aws_ecr_lifecycle_policy" "this" {
   repository = aws_ecr_repository.this.name
 
